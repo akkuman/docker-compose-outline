@@ -1,0 +1,97 @@
+version: "3"
+services:
+
+  wk-redis:
+    image: redis:latest
+    restart: on-failure:3
+    healthcheck:
+      test: redis-cli ping
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    networks:
+      - wk_net
+
+  wk-postgres:
+    image: postgres:latest
+    restart: on-failure:3
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: outline
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U user -d outline
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - wk_net
+
+  wk-minio:
+    image: minio/minio:latest
+    restart: on-failure:3
+    command: "minio server /minio_root"
+    ports:
+      - 9000:9000
+    volumes:
+      - ./data/minio_root:/minio_root:z
+      - ./data/certs:/root/.minio/certs:z
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    env_file:
+      - ./minio.env
+    networks:
+      - wk_net
+
+  wk-createbuckets:
+    image: minio/mc
+    depends_on:
+      wk-minio:
+        condition: service_healthy
+    env_file:
+      - ./minio.env
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add minio http://wk-minio:9000 $${MINIO_ACCESS_KEY} $${MINIO_SECRET_KEY}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb minio/outline-bucket;
+      /usr/bin/mc policy set download minio/outline-bucket;
+      exit 0;
+      "
+    networks:
+      - wk_net
+
+  wk-outline:
+    image: outlinewiki/outline:latest
+    restart: on-failure:3
+    command: sh -c "yarn sequelize:migrate --env production-ssl-disabled && yarn start"
+    env_file:
+      - ./outline.env
+    ports:
+      - 3000:3000
+    depends_on:
+      wk-postgres:
+        condition: service_healthy
+      wk-redis:
+        condition: service_healthy
+      wk-minio:
+        condition: service_healthy
+    networks:
+      - wk_net
+
+  casdoor:
+    image: casbin/casdoor-all-in-one:v1.71.0
+    restart: on-failure:3
+    ports:
+      - 8000:8000
+    volumes:
+      - ./casdoor_init_data.json:/init_data.json
+    networks:
+      - wk_net
+
+networks:
+  wk_net:

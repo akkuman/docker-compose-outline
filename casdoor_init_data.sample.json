@@ -1,0 +1,105 @@
+{
+    "organizations": [
+        {
+            "owner": "admin",
+            "name": "outline-org",
+            "displayName": "outline-org",
+            "websiteUrl": "http://10.60.26.3:3000",
+            "favicon": "https://www.getoutline.com/images/logo.svg",
+            "passwordType": "bcrypt",
+            "phonePrefix": "",
+            "defaultAvatar": "https://casbin.org/img/casbin.svg",
+            "tags": [
+                ""
+            ]
+        }
+    ],
+    "applications": [
+        {
+            "owner": "admin",
+            "name": "outline",
+            "displayName": "outline",
+            "logo": "https://www.getoutline.com/images/logo.svg",
+            "homepageUrl": "http://10.60.26.3:3000",
+            "description": "Your team’s knowledge base",
+            "organization": "outline-org",
+            "cert": "cert-built-in",
+            "enablePassword": true,
+            "enableSignUp": true,
+            "clientId": "${OIDC_CLIENT_ID}",
+            "clientSecret": "${OIDC_CLIENT_SECRET}",
+            "providers": [
+                {
+                    "name": "provider_captcha_default",
+                    "canSignUp": false,
+                    "canSignIn": false,
+                    "canUnlink": false,
+                    "prompted": false,
+                    "alertType": "None"
+                }
+            ],
+            "signupItems": [
+                {
+                    "name": "ID",
+                    "visible": false,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "Random"
+                },
+                {
+                    "name": "Username",
+                    "visible": true,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "None"
+                },
+                {
+                    "name": "Display name",
+                    "visible": false,
+                    "required": false,
+                    "prompted": false,
+                    "rule": "None"
+                },
+                {
+                    "name": "Password",
+                    "visible": true,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "None"
+                },
+                {
+                    "name": "Confirm password",
+                    "visible": true,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "None"
+                },
+                {
+                    "name": "Email",
+                    "visible": true,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "No verification"
+                },
+                {
+                    "name": "Phone",
+                    "visible": false,
+                    "required": false,
+                    "prompted": false,
+                    "rule": "None"
+                },
+                {
+                    "name": "Agreement",
+                    "visible": true,
+                    "required": true,
+                    "prompted": false,
+                    "rule": "None"
+                }
+            ],
+            "redirectUris": [
+                "http://10.60.26.3:3000/auth/oidc.callback"
+            ],
+            "expireInHours": 168
+        }
+    ]
+}
