@@ -42,6 +42,8 @@ https_portal_part="
       interval: 20s
       timeout: 20s
       retries: 5
+    networks:
+      - wk_net
 "
 
 # create deploy directory
