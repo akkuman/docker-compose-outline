@@ -1,11 +1,25 @@
 # Docker-Compose-Outline
 
+## Important
+
+**After the installation is complete, you need to go to <SSO_DOMAIN> to change the administrator account password. The default password is admin:123**
+
 ## Try
 
 ```shell
 git clone https://github.com/akkuman/docker-compose-outline.git
 cd docker-compose-outline
 ```
+
+### deploy with ssl(for production)
+
+```shell
+MODE=prod SSO_DOMAIN=oauth.fbi.com OUTLINE_DOMAIN=wiki.fbi.com S3_DOMAIN=s3.fbi.com bash genconf.sh
+cd deploy
+sudo docker compose up -d
+```
+
+see https://wiki.fbi.com now
 
 ### local deploy without ssl(for test)
 
@@ -34,20 +48,6 @@ sudo docker compose up -d
 ```
 
 see https://wiki.fbi.com now
-
-### deploy with ssl(for production)
-
-```shell
-MODE=prod SSO_DOMAIN=oauth.fbi.com OUTLINE_DOMAIN=wiki.fbi.com S3_DOMAIN=s3.fbi.com bash genconf.sh
-cd deploy
-sudo docker compose up -d
-```
-
-see https://wiki.fbi.com now
-
-## Important
-
-**After the installation is complete, you need to go to <SSO_DOMAIN> to change the administrator account password. The default password is admin:123**
 
 # FAQ
 
