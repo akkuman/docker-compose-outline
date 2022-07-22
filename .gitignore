@@ -1,3 +1,5 @@
 casdoor_init_data.json
 minio.env
 outline.env
+https_portal.env
+deploy

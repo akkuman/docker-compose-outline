@@ -4,7 +4,7 @@
             "owner": "admin",
             "name": "outline-org",
             "displayName": "outline-org",
-            "websiteUrl": "http://10.60.26.3:3000",
+            "websiteUrl": "${PROTOCOL}://${OUTLINE_DOMAIN}",
             "favicon": "https://www.getoutline.com/images/logo.svg",
             "passwordType": "bcrypt",
             "phonePrefix": "",
@@ -20,7 +20,7 @@
             "name": "outline",
             "displayName": "outline",
             "logo": "https://www.getoutline.com/images/logo.svg",
-            "homepageUrl": "http://10.60.26.3:3000",
+            "homepageUrl": "${PROTOCOL}://${OUTLINE_DOMAIN}",
             "description": "Your team’s knowledge base",
             "organization": "outline-org",
             "cert": "cert-built-in",
@@ -97,7 +97,7 @@
                 }
             ],
             "redirectUris": [
-                "http://10.60.26.3:3000/auth/oidc.callback"
+                "${PROTOCOL}://${OUTLINE_DOMAIN}/auth/oidc.callback"
             ],
             "expireInHours": 168
         }
