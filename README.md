@@ -45,6 +45,10 @@ sudo docker compose up -d
 
 see https://wiki.fbi.com now
 
+## Important
+
+**After the installation is complete, you need to go to <SSO_DOMAIN> to change the administrator account password. The default password is admin:123**
+
 # FAQ
 
 1. errror: route: command not found
@@ -86,6 +90,6 @@ wk-outline:
   networks:
       - wk_net  
   extra_hosts:
-      - <your_s3_domain>:<your_ip>
-      - <your_sso_domain>:<your_ip>
+      - <S3_DOMAIN>:<your_ip>
+      - <SSO_DOMAIN>:<your_ip>
 ```
