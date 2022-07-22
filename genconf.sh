@@ -46,16 +46,33 @@ https_portal_part="
       - wk_net
 "
 
+outline_hosts="
+    extra_hosts:
+      - ${SSO_DOMAIN}:host-gateway
+      - ${S3_DOMAIN}:host-gateway
+"
+
 # create deploy directory
 mkdir -p deploy
 
 if [ ! -z "$SSO_DOMAIN" ] && [ ! -z "$OUTLINE_DOMAIN" ] && [ ! -z "$S3_DOMAIN" ]
 then
+    # if local stage, add extra_hosts
+    if [ "$HTTPS_PORTAL_STAGE" == "local" ]
+    then
+        insert_line_no=$(echo $(grep -n 'wk-outline:' docker-compose.sample.yml | awk '{print $1+1}' FS=":"))
+        awk_command="$(while IFS= read -r line; do echo "print \"$line\""; done <<< $outline_hosts)"
+        awk 'NR=='$insert_line_no' {'"$awk_command"'}1' docker-compose.sample.yml > ./deploy/docker-compose.tmp.yml
+    fi
+    if [ ! -f "./deploy/docker-compose.tmp.yml" ]
+    then
+        cp docker-compose.sample.yml ./deploy/docker-compose.tmp.yml
+    fi
     # if enable domain, then enable https
     export PROTOCOL="https"
     envsubst < "https_portal.sample.env" > "./deploy/https_portal.env"
     # delete port mapping
-    sed -e '/ports:/d' -e '/- 8000:8000/d' -e '/- 9000:9000/d' -e '/- 3000:3000/d' docker-compose.sample.yml > ./deploy/docker-compose.tmp.yml
+    sed -i -e '/ports:/d' -e '/- 8000:8000/d' -e '/- 9000:9000/d' -e '/- 3000:3000/d' ./deploy/docker-compose.tmp.yml
     # insert part of https_portal ot docker-compose.yml
     # get next line number which match 'services:'
     insert_line_no=$(echo $(grep -n services: ./deploy/docker-compose.tmp.yml | awk '{print $1+1}' FS=":"))
