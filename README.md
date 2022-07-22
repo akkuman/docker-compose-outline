@@ -52,3 +52,40 @@ see https://wiki.fbi.com now
 ```shell
 apt install -y net-tools
 ```
+
+2. I have not changed the DNS resolution record, but I have changed the local hosts file pointing, can I use the domain name test?
+
+you can.
+
+but you need update your ./deploy/docker-compose.yml after run `bash genconf.sh`.
+
+you need add extra_hosts in service `wk-outline`
+
+for example:
+
+from 
+
+```yaml
+wk-outline:
+  image: outlinewiki/outline:latest
+  ...
+  depends_on:
+    ...
+  networks:
+    - wk_net
+```
+
+to 
+
+```yaml
+wk-outline:
+  image: outlinewiki/outline:latest
+  ...
+  depends_on:
+      ...
+  networks:
+      - wk_net  
+  extra_hosts:
+      - <your_s3_domain>:<your_ip>
+      - <your_sso_domain>:<your_ip>
+```
