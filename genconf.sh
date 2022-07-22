@@ -1,18 +1,12 @@
 #!/bin/bash
 
-rand_str()
-{
-    s=`strings /dev/urandom |tr -dc A-Za-z0-9 | head -c$1; echo`
-    echo "$s"
-}
-
-export MINIO_ROOT_USER=${MINIO_ROOT_USER:-$(rand_str 8)}
-export MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-$(rand_str 24)}
-export OIDC_CLIENT_ID=${OIDC_CLIENT_ID:-$(rand_str 20)}
-export OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-$(rand_str 40)}
+export MINIO_ROOT_USER=${MINIO_ROOT_USER:-`openssl rand -hex 4`}
+export MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-`openssl rand -hex 12`}
+export OIDC_CLIENT_ID=${OIDC_CLIENT_ID:-`openssl rand -hex 10`}
+export OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-`openssl rand -hex 20`}
 export CURIP=${CURIP:-`echo $(echo $(ip a | grep $(route -n | grep ^0.0.0.0 | awk '{print $8}') | grep "inet " | awk '{print $2}') | sed 's+/.*++')`}
-export SECRET_KEY=${SECRET_KEY:-$(rand_str 64)}
-export UTILS_SECRET=${UTILS_SECRET:-$(rand_str 64)}
+export SECRET_KEY=${SECRET_KEY:-`openssl rand -hex 32`}
+export UTILS_SECRET=${UTILS_SECRET:-`openssl rand -hex 32`}
 export SSO_DOMAIN=${SSO_DOMAIN}
 export OUTLINE_DOMAIN=${OUTLINE_DOMAIN}
 export S3_DOMAIN=${S3_DOMAIN}
