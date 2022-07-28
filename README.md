@@ -56,3 +56,7 @@ see https://wiki.fbi.com now
 ```shell
 apt install -y net-tools
 ```
+
+# TODO
+
+- support s3 private mode

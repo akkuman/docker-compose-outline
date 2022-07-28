@@ -99,3 +99,5 @@ fi
 envsubst < "minio.sample.env" > "./deploy/minio.env"
 envsubst < "outline.sample.env" > "./deploy/outline.env"
 envsubst < "casdoor_init_data.sample.json" > "./deploy/casdoor_init_data.json"
+
+cp s3_policy.json ./deploy/s3_policy.json
