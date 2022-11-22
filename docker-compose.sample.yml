@@ -13,7 +13,7 @@ services:
       - wk_net
 
   wk-postgres:
-    image: postgres:latest
+    image: postgres:14
     restart: on-failure:3
     environment:
       POSTGRES_USER: user
