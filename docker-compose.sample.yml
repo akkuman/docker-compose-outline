@@ -70,7 +70,7 @@ services:
   wk-outline:
     image: outlinewiki/outline:latest
     restart: on-failure:3
-    command: sh -c "yarn sequelize:migrate --env production-ssl-disabled && yarn start"
+    command: sh -c "yarn sequelize db:migrate --env production-ssl-disabled && yarn start"
     env_file:
       - ./outline.env
     ports:
