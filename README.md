@@ -29,7 +29,7 @@ cd deploy
 sudo docker compose up -d
 ```
 
-see http://<your_vps_ip>:3000 now
+see http://<your_vps_ip>:3000 now, sso deploy on http://<your_vps_ip>:8000
 
 ### local deploy with ssl(for test)
 
